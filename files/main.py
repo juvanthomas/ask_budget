@@ -1,9 +1,4 @@
 from flask import Flask, request
-from twilio.twiml.messaging_response import Body, Media, Message, MessagingResponse
-import logging
-import boto3
-from botocore.exceptions import ClientError
-from botocore.client import Config
 import requests
 
 # ~ data of the url of views
