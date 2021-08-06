@@ -1,35 +1,6 @@
 from flask import Flask, request
 import requests
-
-# ~ data of the url of views
-dashboard_urls = {
-    'overview': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/f5950062-44c8-4990-87ba-aac5976cd2ca/pdf",
-    'product': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/05173d09-3cf7-43b7-954f-ffeb0201084e/pdf",
-    'customers': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/0d7cf321-8275-47fb-89ab-4801ff7441da/pdf",
-    'shipping': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/7c2d395e-06b1-4865-a34a-e6224ac5d11c/pdf",
-    'performance': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/5a867a38-f317-41f1-96e2-4951eff63be3/pdf",
-    'commision_model': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/05c9936d-dc4b-458d-a201-debc5bc09a01/pdf",
-    'order_details': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/98dc43c1-ff10-4735-8683-e36250a4ae74/pdf",
-    'forecast': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/b6fad0af-8532-4e89-b672-c8d5242bec7b/pdf",
-    'what_if_forecast': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/72fb1301-1112-4a4a-93ca-5b77aa1cdd90/pdf",
-    'profit': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/b0397337-d0d1-48c7-b28b-d990de327c95/pdf",
-    'sales': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/e35824f8-3e84-42dd-b7be-ebe5cf7ed6df/pdf",
-    'employees': "http://61.2.141.81:8080//api/3.6/sites/3dccc5ce-a7e1-498f-a3d6-816927b960cd/views/29a349ae-d4c1-4955-8d90-02392f3d1f86/pdf"
-
-}
-
-maping = {"1": "overview",
-          "2": "product",
-          "3": "customers",
-          "4": "shipping",
-          "5": "performance",
-          "6": "commision_model",
-          "7": "order_details",
-          "8": "forecast",
-          "9": "what_if_forecast",
-          "10": "profit",
-          "11": "sales",
-          "12": "employees"}
+import re
 
 # ~ logic of the program starts here
 
@@ -46,18 +17,53 @@ def sms_reply():
     msg = request.json["text"]  # postman
     query = str(msg)
     try:
-        dashboard_name = maping[query]
-        keyword = dashboard_urls[maping[query]]
-        print(maping[query])
+        API = 'https://api.wit.ai/message?v=20210806&q='
 
-        print('keyword = ', keyword)
-        response = keyword
+        URL = API + query
+        
+        head = {"Authorization": 'Bearer JG6DLERPGOUL3OTATUE7XZY47D7S73IS'}
+        
+        r = requests.get(url=URL, headers=head)
+        print(r.json())
+        k =r.json()
+        
+        
+        if k['intents'] ==[]:
+            keyword = "unknown"
+            print("k = ",keyword)
+            
+        elif k['intents'][0]['name'] == 'budget_analytics':      
+            
+            entity_value = []
+            entity_name_list = []
+            temp_result = {}    
+            entity_list = r.json()['entities']
+            # For saving names and values
+            for i in entity_list:
+                
+                all_entities = r.json()['entities'][i]
+                for entity in all_entities:
+                    
+                    if entity['name']=="sorting2":
+                        temp_result[entity['name']]=entity['role']
+                        limit_body = entity['body']
+                        limit=re.findall(r'\d+', limit_body)
+                        temp_result['limit']=limit[0]
+                        
+                        
+                    else:            
+                        entity_value.append(entity['value'])
+                        entity_name_list.append(entity['name'])
+                        keyword=entity['value']
+                        temp_result[entity['name']]=entity['value']
+                        
+        response =temp_result
 
     except:
 
         response = "nothing"
 
-    return str(response)
+    return response
 
 
 if __name__ == "__main__":
