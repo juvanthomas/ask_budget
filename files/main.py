@@ -18,7 +18,7 @@ def commit():
     
     subprocess.run(["git","pull"])
 
-    return ""
+    return Response(status=200)
 
 
 @app.route("/ask", methods=['POST'])
