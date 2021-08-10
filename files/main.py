@@ -12,6 +12,12 @@ def hello():
 
     return "##########      Welcome to  ask Budget !!      ###############"
 
+@app.route("/commit",methods=['POST'])
+def commit():
+    
+    subprocess.run(["git","pull"])
+
+    return ""
 
 
 @app.route("/ask", methods=['POST'])
