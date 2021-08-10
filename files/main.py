@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
 
-    return "##########      Welcome to  ask Budget 3.0!! updated      ###############"
+    return "##########      Welcome to  Ask Budget 3.0!    ###############"
 
 @app.route("/commit",methods=['POST'])
 def commit():
