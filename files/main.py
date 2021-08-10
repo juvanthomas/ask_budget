@@ -17,6 +17,7 @@ def hello():
 def commit():
     
     subprocess.run(["git","pull"])
+    subprocess.run(["pip3","install","-r","requirments.txt"])
 
     return Response(status=200)
 
