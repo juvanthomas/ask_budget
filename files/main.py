@@ -66,8 +66,15 @@ def sms_reply():
                         entity_name_list.append(entity['name'])
                         keyword=entity['value']
                         temp_result[entity['name']]=entity['value']
-                        
-        response =temp_result
+        
+        result =temp_result
+        if "dimension" in result.keys():
+            pass
+        else:
+            if "measure" in result.keys():
+                
+                result['dimension']=result['measure']                
+        response =result
 
     except:
 
