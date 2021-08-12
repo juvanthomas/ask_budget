@@ -68,13 +68,32 @@ def sms_reply():
                         temp_result[entity['name']]=entity['value']
         
         result =temp_result
+        
+        # if dimension is not present  this code block will take measure as dimension 
+        
+        
+        if "calculation" in result.keys():
+            pass
+        else:
+            result['calculation']="sum"
+        if  "measure" in result.keys():
+            if result['measure'] in ['lessthan_100','greaterthan_100']:
+                result['filter']=result['measure']
+                result['measure1']='actual_amount'
+                result['measure2']='budget_amount'
+                del result['measure']
+            else:
+                result['measure1']='actual_amount'
+                result['measure2']='budget_amount'
+                del result['measure']
         if "dimension" in result.keys():
             pass
         else:
-            if "measure" in result.keys():
+            if "measure1" in result.keys():
                 
-                result['dimension']=result['measure']                
-        response =result
+                result['dimension']=result['measure1']
+        
+        
 
     except:
 
