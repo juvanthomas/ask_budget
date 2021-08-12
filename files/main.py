@@ -92,6 +92,8 @@ def sms_reply():
             if "measure1" in result.keys():
                 
                 result['dimension']=result['measure1']
+                
+        response =result
         
         
 
