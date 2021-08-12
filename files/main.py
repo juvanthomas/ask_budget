@@ -59,6 +59,13 @@ def sms_reply():
                         limit_body = entity['body']
                         limit=re.findall(r'\d+', limit_body)
                         temp_result['limit']=limit[0]
+                    elif entity['name']=="measure":
+                        entity_value.append(entity['value'])
+                        entity_name_list.append(entity['name'])
+                        keyword=entity['value']
+                        temp_result[entity['name']]=entity['value']
+                        if entity['role']=="utilization_calculation":
+                            temp_result['calculation']='percentage'
                         
                         
                     else:            
