@@ -1,4 +1,3 @@
 #!/bin/bash
-echo "Starting to pull"
-git pull
-
+cd files
+pip3 install -r requirments.txt
