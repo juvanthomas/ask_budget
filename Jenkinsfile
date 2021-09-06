@@ -17,7 +17,7 @@ pipeline {
 	   }
 	   stage('Run Image') {
 	        steps {
-	        sh 'sudo docker run -d -p 5011:4000 budget ask_budget:v1'
+	        sh 'sudo docker run -d -p 5011:4000 --name budget ask_budget:v1'
 	        }
 	   }
 		
