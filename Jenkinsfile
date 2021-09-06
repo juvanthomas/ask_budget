@@ -12,18 +12,18 @@ pipeline {
 		
 		stage('Build Image') {
 	        steps {
-	        sh 'sudo docker build -t nlp-python:v1 .'
+	        sh 'sudo docker build -t ask_budget:v1 .'
 	        }
 	   }
 	   stage('Stop container') {
 	        steps {
-	        sh 'sudo docker stop nlpmodel'
-			sh 'sudo docker rm -f nlpmodel'
+	        sh 'sudo docker stop budget'
+			sh 'sudo docker rm -f budget'
 	        }
 	   }
 	   stage('Run Image') {
 	        steps {
-	        sh 'sudo docker run -d -p 5010:4000 nlpmodel nlp-python:v1'
+	        sh 'sudo docker run -d -p 5010:4000 nlpmodel ask_budget:v1'
 	        }
 	   }
 		
